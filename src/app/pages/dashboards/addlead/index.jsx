@@ -115,7 +115,9 @@ useEffect(() => {
       const id = searchParams.get("id");
       setLeadid(id);
       if (!leadId) return;
-      const { data: response } = await axios.get(`https://localhost:7257/api/Lead/${leadId}`);
+      // const { data: response } = await axios.get(`https://localhost:7257/api/Lead/${leadId}`);
+      const { data: response } = await axios.get(`https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/Lead/${leadId}`);
+
       console.log(response);
       
       var newdata={id:response.id,lead_name: response.leadName, contact_number:response.contactNumber,lead_source_id: response.leadSourceId,  school_id:response.schoolId,  branch_id: response.branchId,
@@ -172,11 +174,16 @@ fetchData();
     try {
       if (leadId && Number(leadId) > 0) {
         // ✅ UPDATE existing lead using PUT
-        await axios.put(`https://localhost:7257/api/Lead/${leadId}`, postData, axiosConfig);
+        // await axios.put(`https://localhost:7257/api/Lead/${leadId}`, postData, axiosConfig);
+
+        await axios.put(`https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/Lead/${leadId}`, postData, axiosConfig);
+
         toast("Lead updated successfully", { invert: true });
       } else {
         // ✅ CREATE new lead using POST
-        await axios.post('https://localhost:7257/api/Lead', postData, axiosConfig);
+        // await axios.post('https://localhost:7257/api/Lead', postData, axiosConfig);
+        await axios.post('https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/Lead/', postData, axiosConfig);
+
         toast("New Lead created successfully", { invert: true });
       }
     } catch (error) {
