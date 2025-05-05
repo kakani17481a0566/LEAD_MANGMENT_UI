@@ -1,14 +1,16 @@
-import js from '@eslint/js';
-import globals from 'globals';
-import react from 'eslint-plugin-react';
-import reactHooks from 'eslint-plugin-react-hooks';
-import reactRefresh from 'eslint-plugin-react-refresh';
-import jsxA11y from 'eslint-plugin-jsx-a11y';
-import eslintConfigPrettier from 'eslint-config-prettier';
+import js from '@eslint/js'
+import globals from 'globals'
+import react from 'eslint-plugin-react'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import jsxA11y from 'eslint-plugin-jsx-a11y'
+import eslintConfigPrettier from 'eslint-config-prettier'
 
 export default [
-  eslintConfigPrettier,
-  { ignores: ['dist', 'vite.config.js'] },
+  js.configs.recommended, // Include base JS rules
+  {
+    ignores: ['dist', 'vite.config.js'],
+  },
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
@@ -20,7 +22,9 @@ export default [
         sourceType: 'module',
       },
     },
-    settings: { react: { version: 'detect' } },
+    settings: {
+      react: { version: 'detect' },
+    },
     plugins: {
       react,
       'react-hooks': reactHooks,
@@ -28,12 +32,11 @@ export default [
       'jsx-a11y': jsxA11y,
     },
     rules: {
-      ...js.configs.recommended.rules,
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
       ...reactHooks.configs.recommended.rules,
       'react/jsx-no-target-blank': 'off',
-      "react/prop-types": 'off',
+      'react/prop-types': 'off',
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
@@ -41,4 +44,5 @@ export default [
       'jsx-a11y/alt-text': 'error',
     },
   },
-];
+  eslintConfigPrettier, // Disable conflicting rules last
+]

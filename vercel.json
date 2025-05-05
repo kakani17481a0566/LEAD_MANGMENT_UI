@@ -1,6 +1,12 @@
+
 {
   "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    {
+      "route": "/*",
+      "serve": "/index.html",
+      "statusCode": 200
+    }
   ]
 }
+
+
