@@ -157,7 +157,9 @@ export function Overview() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data: response } = await axios.get('https://localhost:7257/api/LeadSummary/LeadStats');
+        // const { data: response } = await axios.get('https://localhost:7257/api/LeadSummary/LeadStats');
+        const { data: response } = await axios.get('https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/LeadSummary/LeadStats');
+
         setLeadData(response);
         setLeadTotals(response.leadTotals);
         setLoading(false);

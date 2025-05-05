@@ -132,7 +132,9 @@ export default function OrdersTable() {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const { data: response } = await axios.get('https://localhost:7257/api/Lead');
+            // const { data: response } = await axios.get('https://localhost:7257/api/Lead');
+            const { data: response } = await axios.get('https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/Lead');
+
             setOrders(response);
              
             //setLoading(false);

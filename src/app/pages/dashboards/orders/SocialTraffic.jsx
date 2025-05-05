@@ -7,39 +7,46 @@ import {
   Transition,
 } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/20/solid";
-//import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import { Fragment, useState,useEffect } from "react";
-
-// Local Imports
+import { Fragment, useState, useEffect } from "react";
 import { Button, Card } from "components/ui";
-// import { formatNumber } from "utils/formatNumber";
-import axios from 'axios';
-
-
+import axios from "axios";
 
 // ----------------------------------------------------------------------
 
-
-
 export function SocialTraffic() {
-  const[channels,setChannels] =useState([{"uid":'',"logo":'',"name":'',"views":0,"impression":''}]);
-    // const [loading, setLoading] = useState(true);
-  
-
+  const [channels, setChannels] = useState([]); // Empty array to store channels data
+  const [loading, setLoading] = useState(true); // State to manage loading status
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data: response } = await axios.get('https://localhost:7257/api/LeadSummary/lead-count-by-source-current-year');
+        // Fetch data from your API endpoint
+        const { data: response } = await axios.get(
+          "https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/LeadSummary/lead-count-by-source-current-year"
+        );
+
+        // Set the response data to channels state
         setChannels(response);
-        console.log("response", response);
+        setLoading(false); // Once data is fetched, set loading to false
+        console.log("Fetched data:", response);
       } catch (error) {
-        console.error(error)
+        console.error("Error fetching data:", error);
+        setLoading(false); // Set loading to false in case of an error
       }
     };
+
     fetchData();
-  },[]);
+  }, []); // Empty dependency array means this runs only once when the component mounts
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <p>Loading...</p>
+      </div>
+    ); // Show loading message until the data is fetched
+  }
+
   return (
     <Card className="px-4 pb-5 sm:px-5">
       <div className="flex h-14 min-w-0 items-center justify-between py-3">
@@ -50,33 +57,23 @@ export function SocialTraffic() {
       </div>
       <div>
         <p>
-          <span className="text-2xl text-gray-800 dark:text-dark-100">
-            135K
-          </span>
-          
+          <span className="text-2xl text-gray-800 dark:text-dark-100">135K</span>
         </p>
         <p className="text-xs-plus">View in this Year</p>
       </div>
       <div className="mt-5 space-y-4">
-        {channels.map((channel) => (
-          <div
-            key={channel.uid}
-            className="flex items-center justify-between gap-2"
-          >
+        {/* Map through the channels data and display it */}
+        {channels.map((channel, index) => (
+          <div key={index} className="flex items-center justify-between gap-2">
             <div className="flex min-w-0 items-center gap-2">
-              <img className="size-6" src={channel.logo} alt={channel.name} />
-              <a
-                href="##"
-                className="truncate transition-opacity hover:opacity-80"
-              >
-                {channel.name}
-              </a>
+              {/* Here we display the source name */}
+              <span className="font-medium">{channel.sourceName}</span>
             </div>
             <div className="flex items-center gap-2">
+              {/* Here we display the total leads */}
               <p className="text-sm-plus text-gray-800 dark:text-dark-100">
-                {channel.views} / {channel.impression}
+                {channel.totalLeads}
               </p>
-              
             </div>
           </div>
         ))}
@@ -87,16 +84,8 @@ export function SocialTraffic() {
 
 function ActionMenu() {
   return (
-    <Menu
-      as="div"
-      className="relative inline-block text-left ltr:-mr-1.5 rtl:-ml-1.5"
-    >
-      <MenuButton
-        as={Button}
-        variant="flat"
-        isIcon
-        className="size-8 rounded-full"
-      >
+    <Menu as="div" className="relative inline-block text-left ltr:-mr-1.5 rtl:-ml-1.5">
+      <MenuButton as={Button} variant="flat" isIcon className="size-8 rounded-full">
         <EllipsisHorizontalIcon className="size-5" />
       </MenuButton>
       <Transition
@@ -114,8 +103,7 @@ function ActionMenu() {
               <button
                 className={clsx(
                   "flex h-9 w-full items-center px-3 tracking-wide outline-hidden transition-colors",
-                  focus &&
-                    "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
+                  focus && "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100"
                 )}
               >
                 <span>Action</span>
@@ -127,8 +115,7 @@ function ActionMenu() {
               <button
                 className={clsx(
                   "flex h-9 w-full items-center px-3 tracking-wide outline-hidden transition-colors",
-                  focus &&
-                    "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
+                  focus && "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100"
                 )}
               >
                 <span>Another action</span>
@@ -140,8 +127,7 @@ function ActionMenu() {
               <button
                 className={clsx(
                   "flex h-9 w-full items-center px-3 tracking-wide outline-hidden transition-colors",
-                  focus &&
-                    "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
+                  focus && "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100"
                 )}
               >
                 <span>Other action</span>
@@ -156,8 +142,7 @@ function ActionMenu() {
               <button
                 className={clsx(
                   "flex h-9 w-full items-center px-3 tracking-wide outline-hidden transition-colors",
-                  focus &&
-                    "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
+                  focus && "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100"
                 )}
               >
                 <span>Separated action</span>

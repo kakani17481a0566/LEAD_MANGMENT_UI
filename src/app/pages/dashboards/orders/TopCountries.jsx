@@ -1,67 +1,72 @@
-// Local Imports
-//import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/24/outline";
+// Import Dependencies
 import { Card } from "components/ui";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from 'axios';
-
 
 // ----------------------------------------------------------------------
 
-
-
 export function TopCountries() {
+  // State to hold the branches data
+  const [branches, setBranches] = useState([]);
 
-  const[branches,setBranches] =useState([{"uid":'',"flag":'',"name":'',"totalCount":0,"convertedCount":0}]);
-      // const [loading, setLoading] = useState(true);
-    
-  
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const { data: response } = await axios.get('https://localhost:7257/api/LeadSummary/LeadCountByBranch-SuccessPercentage  ');
-          setBranches(response);
-          console.log("response", response);
-        } catch (error) {
-          console.error(error)
-        }
-      };
-      fetchData();
-    },[]);
+  useEffect(() => {
+    // Fetch data from the API when the component mounts
+    const fetchData = async () => {
+      try {
+        // API call to get the lead count by branch
+        const { data: response } = await axios.get(
+          'https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/LeadSummary/LeadCountByBranch-SuccessPercentage'
+        );
+
+        // Set the response data to the state
+        setBranches(response);
+      } catch (error) {
+        // Handle any errors
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    // Call the fetchData function to get the data
+    fetchData();
+  }, []); // Empty dependency array means the effect runs only once when the component mounts
+
   return (
-    <Card className="px-4 pb-5 sm:px-5">
-      <div className="flex h-14 min-w-0 items-center justify-between py-3">
-        <h2 className="truncate font-medium tracking-wide text-gray-800 dark:text-dark-100">
-          Top Branchs
+    <Card className="px-6 py-5 sm:px-8 bg-white shadow-md rounded-lg">
+      <div className="flex justify-between items-center py-3 mb-5">
+        <h2 className="text-lg font-semibold text-gray-800">
+          Top Branches
         </h2>
-        
       </div>
-      <div>
-        <p>
-          <span className="text-2xl text-gray-800 dark:text-dark-100">64</span>
-        </p>
-        <p className="text-xs-plus">Branchs</p>
+
+      {/* Show the total number of branches */}
+      <div className="text-center mb-5">
+        <span className="text-3xl font-semibold text-gray-800">
+          {branches.length}
+        </span>
+        <p className="text-xs text-gray-600">Branches</p>
       </div>
-      <div className="mt-5 space-y-4">
+
+      {/* Branch Rows */}
+      <div className="space-y-4">
         {branches.map((branch) => (
           <div
-            key={branch.uid}
-            className="flex items-center justify-between gap-2"
+            key={branch.branchName}
+            className="flex items-center justify-between p-3 bg-gray-50 rounded-md shadow-sm group relative"
           >
-            <div className="flex min-w-0 items-center gap-2">
-              <img className="size-6" src={branch.flag} alt={branch.name} />
-              <a
-                href="##"
-                className="truncate transition-opacity hover:opacity-80"
-              >
-                {branch.name}
-              </a>
+            <div className="flex items-center gap-4">
+              <span className="text-md font-medium text-gray-800">
+                {branch.branchName}
+              </span>
             </div>
-            <div className="flex items-center gap-2">
-              <p className="text-sm-plus text-gray-800 dark:text-dark-100">
-                {branch.totalCount} /  {branch.convertedCount}
-              </p>
-               
+            <div className="flex items-center gap-4">
+              <div className="text-sm text-gray-800">
+                {branch.totalCount} / {branch.convertedCount}
+              </div>
+
+              {/* Tooltip for success percentage */}
+              <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 w-max p-2 text-sm text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {branch.successPercentage}% Success
+              </div>
             </div>
           </div>
         ))}

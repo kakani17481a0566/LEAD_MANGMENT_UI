@@ -140,7 +140,9 @@ useEffect(() => {
         try {
            
 
-          axios.post('https://localhost:7257/api/Lead', postData, axiosConfig)
+          // axios.post('https://localhost:7257/api/Lead', postData, axiosConfig)
+          axios.post('https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/Lead', postData, axiosConfig)
+
           .then((res) => {
             toast("New Post Published. Now you can add new one", {
               invert: true,
