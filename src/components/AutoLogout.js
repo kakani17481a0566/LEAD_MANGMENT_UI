@@ -3,13 +3,18 @@ import { useEffect, useRef } from "react";
 const AutoLogout = ({ timeout = 60000 }) => {
   const timer = useRef(null);
 
+  // Reset timer and set up auto-logout
   const resetTimer = () => {
-    if (timer.current) clearTimeout(timer.current);
+    clearTimeout(timer.current);
     timer.current = setTimeout(() => {
-      localStorage.clear();      // Clear local storage
-      sessionStorage.clear();    // Clear session storage
-      caches.keys().then(names => names.forEach(name => caches.delete(name))); // Optional: clear browser cache
-      window.location.reload();  // 🔁 Full page reload (user will be logged out)
+      // Clear all possible user data
+      localStorage.clear();
+      sessionStorage.clear();
+      if ('caches' in window) {
+        caches.keys().then(names => names.forEach(name => caches.delete(name)));
+      }
+      // Force full reload to reset app state
+      window.location.reload();
     }, timeout);
   };
 
@@ -17,7 +22,7 @@ const AutoLogout = ({ timeout = 60000 }) => {
     const events = ["mousemove", "keydown", "click", "scroll", "touchstart"];
     events.forEach(event => window.addEventListener(event, resetTimer));
 
-    resetTimer();
+    resetTimer(); // Start on mount
 
     return () => {
       events.forEach(event => window.removeEventListener(event, resetTimer));
