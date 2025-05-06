@@ -26,13 +26,13 @@ import { Button, Card, Input, Switch} from "components/ui";
 //                       lead_type_id: "",  lead_date_time: "",  is_converted:0,  lead_list_id:0,  status_id:0,
 //                       owner_id:0,  sales_person_id:0, };
 const lead_source = [
-  {   id: "1",    label: "Meta Ads", },
-  {    id: "2",    label: "Referral",  },
-  {    id: "3",  label: "Google",  },
-  {    id: "4",    label: "Website",  },
-  {    id: "5",    label: "Organic",  },
-  {    id: "6",    label: "Walk-in",  },
-  {    id: "7",    label: "Parking Board",  },
+  {   id: 1,    label: "Meta Ads" },
+  {    id: 2,    label: "Referral"  },
+  {    id: 3,  label: "Google"  },
+  {    id: 4,    label: "Website"  },
+  {    id: 5,    label: "Organic"  },
+  {    id: 6,    label: "Walk-in"  },
+  {    id: 7,    label: "Parking Board" },
 ];
  const schools = [
    { id: 1, name: "My School Italy Hyderabad" },

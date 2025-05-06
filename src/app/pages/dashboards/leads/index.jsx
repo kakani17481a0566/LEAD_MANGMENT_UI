@@ -332,7 +332,7 @@ export default function OrdersDatatableV2() {
                         {row.getVisibleCells().map((cell) => {
                           return (
                             <Td
-                              key={cell.id}
+                              key={cell.id} onClick={() => navigate(`/dashboards/addLead?id=${row.original.id}`)} 
                               className={clsx(
                                 "relative",
                                 cardSkin === "shadow-sm"
