@@ -31,7 +31,8 @@ export default function SignIn() {
   const fetchData = async (data) => {
     var postData = {
       identifier: data.username,
-      password: data.password,    };
+      password: data.password,
+    };
     console.log(postData);
     let axiosConfig = {
       headers: {
@@ -86,7 +87,7 @@ export default function SignIn() {
           "url(https://res.cloudinary.com/kakani7/image/upload/v1746165081/MSI/n0virwrf54za0cynyy3w.jpg)",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        height: "100vh", // updated for full viewport height
+        // height: "100vh", // updated for full viewport height
         display: "flex", // added to center content
         justifyContent: "center", // horizontally center
         alignItems: "center", // vertically center
@@ -106,15 +107,15 @@ export default function SignIn() {
         <Page title="Login">
           <main className="min-h-100vh grid w-full grow grid-cols-1 place-items-center">
             <div className="w-full max-w-[26rem] p-4 sm:px-5">
-            <div className="text-center">
-  <img
-    src="https://res.cloudinary.com/kakani7/image/upload/v1746448921/MSI/ewmfrkko11xbaiexcan5.svg"
-    alt="App Logo"
-    className="mx-auto h-auto w-full max-w-xs"
-  />
-</div>
+              <div className="text-center"></div>
 
               <Card className="bg-opacity-20 index : 1 mt-5 rounded-lg bg-white p-5 text-black shadow-lg backdrop-blur-md lg:p-7">
+                <img
+                  src="https://res.cloudinary.com/kakani7/image/upload/v1746448921/MSI/ewmfrkko11xbaiexcan5.svg"
+                  alt="App Logo"
+                  className="mx-auto h-auto w-full max-w-xs pb-6"
+                />
+
                 <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
                   <div className="space-y-4">
                     <Input
@@ -145,7 +146,7 @@ export default function SignIn() {
                       error={errors?.password?.message}
                     />
                   </div>
-  
+
                   <div className="mt-2">
                     <InputErrorMsg
                       when={errorMessage && errorMessage?.message !== ""}
@@ -153,7 +154,7 @@ export default function SignIn() {
                       {errorMessage?.message}
                     </InputErrorMsg>
                   </div>
-  
+
                   <div className="mt-4 flex items-center justify-between space-x-2">
                     <Checkbox label="Remember me" />
                     <a
@@ -163,12 +164,11 @@ export default function SignIn() {
                       Forgot Password?
                     </a>
                   </div>
-  
+
                   <Button type="submit" className="mt-5 w-full" color="primary">
                     Sign In
                   </Button>
                 </form>
-              
               </Card>
               <div className="dark:text-dark-300 mt-8 flex justify-center text-xs text-gray-400">
                 <a href="##">Privacy Notice</a>
@@ -181,6 +181,4 @@ export default function SignIn() {
       </div>
     </div>
   );
-  
-
 }
