@@ -62,26 +62,34 @@ export function TopCountries() {
           </div>
 
           <div className="space-y-4">
-            {branches.map((branch) => (
-              <div
-                key={branch.branchName}
-                className="flex items-center justify-between gap-2"
-              >
-                <div className="flex min-w-0 items-center gap-2">
-                  <span className="font-medium text-gray-800 dark:text-dark-100">
-                    {branch.branchName}
-                  </span>
+            {branches.map((branch) => {
+              const percentage =
+                branch.totalCount > 0
+                  ? ((branch.convertedCount / branch.totalCount) * 100).toFixed(1) + "%"
+                  : "0%";
+
+              return (
+                <div
+                  key={branch.name}
+                  className="flex items-center justify-between gap-2"
+                >
+                  <div className="flex min-w-0 items-center gap-2">
+                    <img src={branch.flag} alt={branch.name} className="w-5 h-5 rounded-full" />
+                    <span className="font-medium text-gray-800 dark:text-dark-100">
+                      {branch.name}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-4 text-sm-plus text-gray-800 dark:text-dark-100">
+                    <span>
+                      {branch.totalCount} / {branch.convertedCount}
+                    </span>
+                    <span className="text-gray-600 dark:text-dark-300">
+                      {percentage}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-4 text-sm-plus text-gray-800 dark:text-dark-100">
-                  <span>
-                    {branch.totalCount} / {branch.convertedCount}
-                  </span>
-                  <span className="text-gray-600 dark:text-dark-300">
-                    {branch.successPercentage}
-                  </span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </>
       )}
