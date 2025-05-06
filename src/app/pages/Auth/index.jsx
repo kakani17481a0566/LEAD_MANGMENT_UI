@@ -1,5 +1,5 @@
 // Import Dependencies
-import { Link } from "react-router";
+// import { Link } from "react-router";
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -168,17 +168,7 @@ export default function SignIn() {
                     Sign In
                   </Button>
                 </form>
-                <div className="text-xs-plus mt-4 text-center">
-                  <p className="line-clamp-1">
-                    <span>Dont have Account?</span>{" "}
-                    <Link
-                      className="text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-600 transition-colors"
-                      to="/pages/sign-up-v1"
-                    >
-                      Create account
-                    </Link>
-                  </p>
-                </div>
+              
               </Card>
               <div className="dark:text-dark-300 mt-8 flex justify-center text-xs text-gray-400">
                 <a href="##">Privacy Notice</a>
