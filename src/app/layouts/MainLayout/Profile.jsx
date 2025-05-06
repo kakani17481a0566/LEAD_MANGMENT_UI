@@ -1,22 +1,15 @@
-// Import Dependencies
-import {
-  Popover,
-  PopoverButton,
-  PopoverPanel,
-  Transition,
-} from "@headlessui/react";
-import {
-  ArrowLeftStartOnRectangleIcon,
-  Cog6ToothIcon,
-} from "@heroicons/react/24/outline";
+import { Popover, PopoverButton, PopoverPanel, Transition } from "@headlessui/react";
+import { ArrowLeftStartOnRectangleIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
 import { TbCoins, TbUser } from "react-icons/tb";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router-dom"; // Use navigate for redirection
 
 // Local Imports
 import { Avatar, AvatarDot, Button } from "components/ui";
 
-// ----------------------------------------------------------------------
+// Import the handleLogout utility
+import { handleLogout } from "utils/logoutUtils";  // Adjust the path if necessary
 
+// Links for profile menu
 const links = [
   {
     id: "1",
@@ -45,20 +38,19 @@ const links = [
 ];
 
 export function Profile() {
+  const navigate = useNavigate(); // Use navigate for redirection
+
   return (
     <Popover className="relative">
+      {/* Avatar button that triggers the profile menu */}
       <PopoverButton
         as={Avatar}
         size={12}
         role="button"
         src="/images/100x100.png"
         alt="Profile"
-        indicator={
-          <AvatarDot color="success" className="ltr:right-0 rtl:left-0" />
-        }
-        classNames={{
-          root: "cursor-pointer",
-        }}
+        indicator={<AvatarDot color="success" className="ltr:right-0 rtl:left-0" />}
+        classNames={{ root: "cursor-pointer" }}
       />
       <Transition
         enter="duration-200 ease-out"
@@ -74,12 +66,9 @@ export function Profile() {
         >
           {({ close }) => (
             <>
+              {/* Profile Header */}
               <div className="dark:bg-dark-800 flex items-center gap-4 rounded-t-lg bg-gray-100 px-4 py-5">
-                <Avatar
-                  size={14}
-                  src="/images/100x100.png"
-                  alt="Profile"
-                />
+                <Avatar size={14} src="/images/100x100.png" alt="Profile" />
                 <div>
                   <Link
                     className="hover:text-primary-600 focus:text-primary-600 dark:text-dark-100 dark:hover:text-primary-400 dark:focus:text-primary-400 text-base font-medium text-gray-700"
@@ -87,25 +76,22 @@ export function Profile() {
                   >
                     Travis Fuller
                   </Link>
-
                   <p className="dark:text-dark-300 mt-0.5 text-xs text-gray-400">
                     Product Designer
                   </p>
                 </div>
               </div>
+
+              {/* Profile Menu Links */}
               <div className="flex flex-col pt-2 pb-5">
                 {links.map((link) => (
                   <Link
                     key={link.id}
                     to={link.to}
-                    onClick={close}
+                    onClick={close}  // Close the menu on link click
                     className="group dark:hover:bg-dark-600 dark:focus:bg-dark-600 flex items-center gap-3 px-4 py-2 tracking-wide outline-hidden transition-all hover:bg-gray-100 focus:bg-gray-100"
                   >
-                    <Avatar
-                      size={8}
-                      initialColor={link.color}
-                      classNames={{ display: "rounded-lg" }}
-                    >
+                    <Avatar size={8} initialColor={link.color} classNames={{ display: "rounded-lg" }}>
                       <link.Icon className="size-4.5" />
                     </Avatar>
                     <div>
@@ -118,8 +104,10 @@ export function Profile() {
                     </div>
                   </Link>
                 ))}
+
+                {/* Logout Button */}
                 <div className="px-4 pt-4">
-                  <Button className="w-full gap-2">
+                  <Button onClick={() => handleLogout(navigate)} className="w-full gap-2">
                     <ArrowLeftStartOnRectangleIcon className="size-4.5" />
                     <span>Logout</span>
                   </Button>

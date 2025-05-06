@@ -15,6 +15,8 @@ import { Link } from "react-router";
 // Local Imports
 import { Avatar, AvatarDot, Button } from "components/ui";
 
+import { handleLogout } from "src/utils/logoutUtils"; // Import handleLogout function
+
 // ----------------------------------------------------------------------
 
 const links = [
@@ -117,7 +119,12 @@ export function Profile() {
                   </Link>
                 ))}
                 <div className="px-4 pt-4">
-                  <Button className="w-full gap-2">
+                  <Button
+                    className="w-full gap-2"
+                    onClick={() => {
+                      handleLogout(); // Call the handleLogout function when the button is clicked
+                    }}
+                  >
                     <ArrowLeftStartOnRectangleIcon className="size-4.5" />
                     <span>Logout</span>
                   </Button>
