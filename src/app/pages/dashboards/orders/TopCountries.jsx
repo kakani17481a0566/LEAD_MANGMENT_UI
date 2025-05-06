@@ -8,6 +8,8 @@ import axios from 'axios';
 export function TopCountries() {
   // State to hold the branches data
   const [branches, setBranches] = useState([]);
+  const [loading, setLoading] = useState(true);  // Loading state
+  const [error, setError] = useState(null);      // Error state
 
   useEffect(() => {
     // Fetch data from the API when the component mounts
@@ -23,6 +25,10 @@ export function TopCountries() {
       } catch (error) {
         // Handle any errors
         console.error("Error fetching data:", error);
+        setError("Failed to load data. Please try again later.");
+      } finally {
+        // Set loading to false when the fetch is complete
+        setLoading(false);
       }
     };
 
@@ -38,39 +44,60 @@ export function TopCountries() {
         </h2>
       </div>
 
-      {/* Show the total number of branches */}
-      <div className="text-center mb-5">
-        <span className="text-3xl font-semibold text-gray-800">
-          {branches.length}
-        </span>
-        <p className="text-xs text-gray-600">Branches</p>
-      </div>
+      {/* Display loading message if the data is still loading */}
+      {loading && (
+        <div className="text-center mb-5">
+          <span className="text-xl text-gray-600">Loading...</span>
+        </div>
+      )}
 
-      {/* Branch Rows */}
-      <div className="space-y-4">
-        {branches.map((branch) => (
-          <div
-            key={branch.branchName}
-            className="flex items-center justify-between p-3 bg-gray-50 rounded-md shadow-sm group relative"
-          >
-            <div className="flex items-center gap-4">
-              <span className="text-md font-medium text-gray-800">
-                {branch.branchName}
-              </span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-sm text-gray-800">
-                {branch.totalCount} / {branch.convertedCount}
-              </div>
+      {/* Display error message if data fetch failed */}
+      {error && (
+        <div className="text-center mb-5">
+          <span className="text-xl text-red-600">{error}</span>
+        </div>
+      )}
 
-              {/* Tooltip for success percentage */}
-              <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 w-max p-2 text-sm text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                {branch.successPercentage}% Success
-              </div>
-            </div>
+      {/* Show the total number of branches if available */}
+      {!loading && !error && branches.length === 0 ? (
+        <div className="text-center mb-5">
+          <span className="text-xl text-gray-600">No branches available.</span>
+        </div>
+      ) : (
+        <>
+          <div className="text-center mb-5">
+            <span className="text-3xl font-semibold text-gray-800">
+              {branches.length}
+            </span>
+            <p className="text-xs text-gray-600">Branches</p>
           </div>
-        ))}
-      </div>
+
+          {/* Branch Rows */}
+          <div className="space-y-4">
+            {branches.map((branch) => (
+              <div
+                key={branch.branchName}
+                className="flex items-center justify-between p-3 bg-gray-50 rounded-md shadow-sm"
+              >
+                <div className="flex items-center gap-4">
+                  <span className="text-md font-medium text-gray-800">
+                    {branch.branchName}
+                  </span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="text-sm text-gray-800">
+                    {branch.totalCount} / {branch.convertedCount}
+                  </div>
+                  {/* Directly show success percentage without hover */}
+                  <div className="text-sm text-gray-600">
+                    {branch.successPercentage}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </Card>
   );
 }
