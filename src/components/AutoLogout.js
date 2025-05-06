@@ -1,45 +1,31 @@
-// src/components/AutoLogout.js
+import { useEffect, useRef } from "react";
 
-import { useEffect } from 'react';
+const AutoLogout = ({ timeout = 60000 }) => {
+  const timer = useRef(null);
 
-const AutoLogout = () => {
+  const resetTimer = () => {
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      localStorage.clear();      // Clear local storage
+      sessionStorage.clear();    // Clear session storage
+      caches.keys().then(names => names.forEach(name => caches.delete(name))); // Optional: clear browser cache
+      window.location.reload();  // 🔁 Full page reload (user will be logged out)
+    }, timeout);
+  };
+
   useEffect(() => {
-    let logoutTimer;
+    const events = ["mousemove", "keydown", "click", "scroll", "touchstart"];
+    events.forEach(event => window.addEventListener(event, resetTimer));
 
-    // Function to log out the user
-    const logout = () => {
-      console.log('User has been logged out due to inactivity');
-      // Your logout logic here, e.g., clearing tokens, redirecting to login page
-      window.location.href = '/login'; // Example redirect to login page
-    };
+    resetTimer();
 
-    // Reset the timer when there is activity
-    const resetTimer = () => {
-      clearTimeout(logoutTimer);
-      logoutTimer = setTimeout(logout, 60000); // Set timeout for 1 minute (60000 ms)
-    };
-
-    // List of events to track user activity
-    const events = ['mousemove', 'keydown', 'click'];
-
-    // Attach event listeners for activity
-    events.forEach((event) => {
-      window.addEventListener(event, resetTimer);
-    });
-
-    // Initial timer setup
-    logoutTimer = setTimeout(logout, 60000); // Start the timer when the component mounts
-
-    // Cleanup event listeners when the component unmounts
     return () => {
-      events.forEach((event) => {
-        window.removeEventListener(event, resetTimer);
-      });
-      clearTimeout(logoutTimer);
+      events.forEach(event => window.removeEventListener(event, resetTimer));
+      clearTimeout(timer.current);
     };
   }, []);
 
-  return null; // This component does not render anything itself
+  return null;
 };
 
 export default AutoLogout;
