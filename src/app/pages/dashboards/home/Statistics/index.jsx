@@ -13,7 +13,7 @@ export function Statistics() {
     <div className="mt-5 grid grid-cols-1 gap-4 sm:gap-5 lg:mt-6 lg:gap-6">
       <Overview />
       <div className="order-first grid grid-cols-12 gap-4 sm:order-none sm:gap-5 lg:gap-6">
-        <SalesReport />
+        <SalesReport /> 
         <div className="col-span-12 order-first grid grid-cols-2 gap-4 sm:order-last sm:col-span-6 sm:gap-5 lg:col-span-5 lg:gap-6 xl:col-span-4">
           <CompletedOrders />          
           <Rating />

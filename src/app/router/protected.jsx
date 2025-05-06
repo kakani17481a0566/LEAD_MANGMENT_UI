@@ -25,12 +25,12 @@ const protectedRoutes = {
           children: [
             {
               index: true,
-              element: <Navigate to="/dashboards/home" />,
+              element: <Navigate to="/dashboards/leads" />,
             },
             {
               path: "home",
               lazy: async () => ({
-                Component: (await import("app/pages/dashboards/home")).default,
+                Component: (await import("app/pages/dashboards/leads")).default,
               }),
             },
             {
