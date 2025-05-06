@@ -8,8 +8,7 @@ import { LocaleProvider } from "app/contexts/locale/Provider";
 import { SidebarProvider } from "app/contexts/sidebar/Provider";
 import { ThemeProvider } from "app/contexts/theme/Provider";
 import router from "app/router/router";
-
-// ----------------------------------------------------------------------
+import AutoLogout from "components/AutoLogout"; // <-- ADD THIS
 
 function App() {
   return (
@@ -18,6 +17,7 @@ function App() {
         <LocaleProvider>
           <BreakpointProvider>
             <SidebarProvider>
+              <AutoLogout timeout={60000} /> {/* <-- ADD THIS */}
               <RouterProvider router={router} />
             </SidebarProvider>
           </BreakpointProvider>
