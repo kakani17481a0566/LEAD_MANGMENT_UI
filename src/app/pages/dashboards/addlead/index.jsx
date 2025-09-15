@@ -7,200 +7,192 @@ import { toast } from "sonner";
 // Local Imports
 import { schema } from "./schema";
 import { Page } from "components/shared/Page";
-import { Button, Card, Input, Switch} from "components/ui";
- //import { Delta } from "components/shared/form/TextEditor";
-// import { CoverImageUpload } from "./components/CoverImageUpload";
-// import { Tags } from "./components/Tags";
-// import { ContextualHelp } from "components/shared/ContextualHelp";
-// import { DatePicker } from "components/shared/form/Datepicker";
-// import { Listbox } from "components/shared/form/Listbox";
- import { Combobox } from "components/shared/form/Combobox";
- import axios from 'axios';
- import {   useState ,useEffect } from "react";
- import { useNavigate } from "react-router";
- import { useLocation } from "react-router";
+import { Button, Card, Input, Switch } from "components/ui";
+import { Combobox } from "components/shared/form/Combobox";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
+import { useLocation } from "react-router";
 
 // ----------------------------------------------------------------------
 
-// const initialState = {id:0,lead_name: "", contact_number:"",lead_source_id: 0,  school_id: "",  branch_id: "",
-//                       lead_type_id: "",  lead_date_time: "",  is_converted:0,  lead_list_id:0,  status_id:0,
-//                       owner_id:0,  sales_person_id:0, };
 const lead_source = [
-  {   id: 1,    label: "Meta Ads" },
-  {    id: 2,    label: "Referral"  },
-  {    id: 3,  label: "Google"  },
-  {    id: 4,    label: "Website"  },
-  {    id: 5,    label: "Organic"  },
-  {    id: 6,    label: "Walk-in"  },
-  {    id: 7,    label: "Parking Board" },
+  { id: 1, label: "Meta Ads" },
+  { id: 2, label: "Referral" },
+  { id: 3, label: "Google" },
+  { id: 4, label: "Website" },
+  { id: 5, label: "Organic" },
+  { id: 6, label: "Walk-in" },
+  { id: 7, label: "Parking Board" },
 ];
- const schools = [
-   { id: 1, name: "My School Italy Hyderabad" },
-   
- ];
+
+const schools = [{ id: 1, name: "My School Italy Hyderabad" }];
+
 const branchs = [
-    { id: 1, name: "Avance" },
-    { id: 2, name: "Hitex" },
-    { id: 3, name: "Kaveri Hills" },
-    { id: 4, name: "Kondapur" },
-    { id: 5, name: "KPHB" },
-    { id: 6, name: "Manikonda" },
-    { id: 7, name: "Mindspace" },
-    { id: 8, name: "Miyapur" },
-    { id: 9, name: "QCity" },
-     
-  ];
-  const lead_types = [
-    { id: 1, name: "Hot Lead" },
-    { id: 2, name: "Waste Lead" },
-    
-     
-  ];
-  const status = [
-    { id: 1, name: "Open" },
-    { id: 2, name: "Visiting Soon" },
-    { id: 3, name: "School Visited" },
-    { id: 4, name: "Closed" },
-    { id: 5, name: "Not Interested" },
-    { id: 6, name: "InProcess" },
-     
-     
-  ];
-  const owners = [
-    { id: 1, name: "Maneendra" },
-    { id: 2, name: "Lokesh" },
-    
-     
-  ];
+  { id: 1, name: "Avance" },
+  { id: 2, name: "Hitex" },
+  { id: 3, name: "Kaveri Hills" },
+  { id: 4, name: "Kondapur" },
+  { id: 5, name: "KPHB" },
+  { id: 6, name: "Manikonda" },
+  { id: 7, name: "Mindspace" },
+  { id: 8, name: "Miyapur" },
+  { id: 9, name: "QCity" },
+];
+
+const lead_types = [
+  { id: 1, name: "Hot Lead" },
+  { id: 2, name: "Waste Lead" },
+];
+
+const status = [
+  { id: 1, name: "Open" },
+  { id: 2, name: "Visiting Soon" },
+  { id: 3, name: "School Visited" },
+  { id: 4, name: "Closed" },
+  { id: 5, name: "Not Interested" },
+  { id: 6, name: "InProcess" },
+];
+
+const owners = [
+  { id: 1, name: "Maneendra" },
+  { id: 2, name: "Lokesh" },
+];
+
+const defaultState = {
+  id: 0,
+  lead_name: "",
+  contact_number: "",
+  lead_source_id: 0,
+  school_id: "",
+  branch_id: "",
+  lead_type_id: "",
+  lead_date_time: "",
+  is_converted: false, // ✅ boolean
+  lead_list_id: 1,
+  status_id: 0,
+  owner_id: 0,
+  sales_person_id: 1,
+};
 
 const AddLead = () => {
   const navigate = useNavigate();
-  const [leadId,setLeadid]=useState(0);
+  const location = useLocation();
+  const [leadId, setLeadid] = useState(0);
 
-
-const [initialState, setinitialState] = useState({id:0,lead_name: "", contact_number:"",lead_source_id: 0,  school_id: "",  branch_id: "",
-  lead_type_id: "",  lead_date_time: "",  is_converted:0,  lead_list_id:0,  status_id:0,
-  owner_id:0,  sales_person_id:0, });
-
-// const searchParams=new URLSearchParams(loaction.search);
-// setLeadid(searchParams.get("id"));
- const formatDate=(date) =>{
-    let datePart = [
-      date.getFullYear(),
-      date.getMonth() + 1,
-      date.getDate()
-      
-    ].map((n, i) => n.toString().padStart(i === 2 ? 2 : 2, "0")).join("-");
-    let timePart = [
-      date.getHours(),
-      date.getMinutes(),
-      date.getSeconds()
-    ].map((n) => n.toString().padStart(2, "0")).join(":");
+  const formatDate = (date) => {
+    let datePart = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
+      .map((n) => n.toString().padStart(2, "0"))
+      .join("-");
+    let timePart = [date.getHours(), date.getMinutes(), date.getSeconds()]
+      .map((n) => n.toString().padStart(2, "0"))
+      .join(":");
     return datePart + " " + timePart;
-  }
-const loaction=useLocation();
-useEffect(() => {
-
-  setinitialState({id:0,lead_name: "", contact_number:"",lead_source_id: 0,  school_id: "",  branch_id: "",
-    lead_type_id: "",  lead_date_time: "",  is_converted:0,  lead_list_id:1,  status_id:0,
-    owner_id:0,  sales_person_id:1, });
-    
-
-
-
-
-  const fetchData = async () => {
-    try {
-      const searchParams = new URLSearchParams(loaction.search);
-      const id = searchParams.get("id");
-      setLeadid(id);
-      if (!leadId) return;
-      // const { data: response } = await axios.get(`https://localhost:7257/api/Lead/${leadId}`);
-      const { data: response } = await axios.get(`https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/Lead/${leadId}`);
-
-      console.log(response);
-      
-      var newdata={id:response.id,lead_name: response.leadName, contact_number:response.contactNumber,lead_source_id: response.leadSourceId,  school_id:response.schoolId,  branch_id: response.branchId,
-        lead_type_id: response.leadTypeId,  lead_date_time: response.dateTime,  is_converted:response.converted,  lead_list_id:response.leadListId,  status_id:response.statusId,
-        owner_id:response.ownerId,  sales_person_id:response.salesPersonId }
-      
-      setinitialState(newdata);
-      reset(newdata);
-      console.log("intial state",initialState);
-      //setLoading(false);
-    } catch (error) {
-      console.error(error)
-    }
-    
   };
-fetchData();
-}, [leadId]);
+
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },   
+    formState: { errors },
     control,
-    
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: initialState,
+    defaultValues: defaultState,
   });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const searchParams = new URLSearchParams(location.search);
+        const id = searchParams.get("id");
+        setLeadid(id);
+
+        if (!id) {
+          reset(defaultState);
+          return;
+        }
+
+        const { data: response } = await axios.get(
+          `https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/Lead/${id}`
+        );
+
+        const newdata = {
+          id: response.id,
+          lead_name: response.leadName,
+          contact_number: response.contactNumber,
+          lead_source_id: response.leadSourceId,
+          school_id: response.schoolId,
+          branch_id: response.branchId,
+          lead_type_id: response.leadTypeId,
+          lead_date_time: response.dateTime,
+          is_converted: response.converted === true, // ✅ boolean
+          lead_list_id: response.leadListId,
+          status_id: response.statusId,
+          owner_id: response.ownerId,
+          sales_person_id: response.salesPersonId,
+        };
+
+        reset(newdata);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, [location.search, reset]);
 
   const saveData = async (data) => {
     const postData = {
-      leadName: data.lead_name,
-      contactNumber: data.contact_number,
-      leadSourceId: data.lead_source_id,
-      branchId: data.branch_id,
-      leadTypeId: data.lead_type_id,
-      dateTime: formatDate(new Date()),
-      converted: data.is_converted,
-      salesPersonId: 1,
-      leadListId: 1,
-      statusId: data.status_id,
-      ownerId: data.owner_id,
-      schoolId: data.school_id
+      LeadName: data.lead_name,
+      ContactNumber: data.contact_number,
+      LeadSourceId: Number(data.lead_source_id),
+      BranchId: Number(data.branch_id),
+      LeadTypeId: Number(data.lead_type_id),
+      DateTime: formatDate(new Date()),
+      Converted: !!data.is_converted, // ✅ boolean
+      SalesPersonId: 1,
+      LeadListId: 1,
+      StatusId: Number(data.status_id),
+      OwnerId: Number(data.owner_id),
+      SchoolId: Number(data.school_id),
     };
-  
+
     const axiosConfig = {
       headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-        'Access-Control-Allow-Origin': '*'
-      }
+        "Content-Type": "application/json;charset=UTF-8",
+        "Access-Control-Allow-Origin": "*",
+      },
     };
-  
+
     try {
       if (leadId && Number(leadId) > 0) {
-        // ✅ UPDATE existing lead using PUT
-        // await axios.put(`https://localhost:7257/api/Lead/${leadId}`, postData, axiosConfig);
-
-        await axios.put(`https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/Lead/${leadId}`, postData, axiosConfig);
+        await axios.put(
+          `https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/Lead/${leadId}`,
+          postData,
+          axiosConfig
+        );
 
         toast("Lead updated successfully", { invert: true });
       } else {
-        // ✅ CREATE new lead using POST
-        // await axios.post('https://localhost:7257/api/Lead', postData, axiosConfig);
-        await axios.post('https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/Lead/', postData, axiosConfig);
-        
+        await axios.post(
+          "https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/Lead/",
+          postData,
+          axiosConfig
+        );
 
-        toast("New Lead created successfully", { invert: true });
+        toast("New lead created successfully", { invert: true });
+        reset(defaultState); // ✅ reset form
+        setLeadid(0);
       }
     } catch (error) {
-      console.error("API ERROR:", error);
+      console.error("API ERROR:", error.response?.data || error);
       toast("Something went wrong. Please try again.", { invert: true });
     }
   };
-  
+
   const onSubmit = (data) => {
-    //alert("sdasd");
-    console.log(data);
     saveData(data);
-    toast("New Post Published. Now you can add new one", {
-      invert: true,
-    });
-    
   };
 
   return (
@@ -210,11 +202,15 @@ fetchData();
           <div className="flex items-center gap-1">
             <DocumentPlusIcon className="size-6" />
             <h2 className="line-clamp-1 text-xl font-medium text-gray-700 dark:text-dark-50">
-              New Lead
+              {leadId ? "Edit Lead" : "New Lead"}
             </h2>
           </div>
           <div className="flex gap-2">
-            <Button className="min-w-[7rem]" variant="outlined"  onClick={() => navigate('/dashboards/lead')}>
+            <Button
+              className="min-w-[7rem]"
+              variant="outlined"
+              onClick={() => navigate("/dashboards/lead")}
+            >
               To List
             </Button>
             <Button
@@ -227,75 +223,90 @@ fetchData();
             </Button>
           </div>
         </div>
-        <form  autoComplete="off"   onSubmit={handleSubmit(onSubmit)}      id="new-post-form"   >
+        <form
+          autoComplete="off"
+          onSubmit={handleSubmit(onSubmit)}
+          id="new-post-form"
+        >
           <div className="grid grid-cols-12 place-content-start gap-4 sm:gap-5 lg:gap-6">
+            {/* Left Section */}
             <div className="col-span-12 lg:col-span-8">
               <Card className="p-4 sm:px-5">
-               
                 <div className="mt-5 space-y-5">
                   <Input
                     label="Lead Name"
-                    placeholder="Enter the Lead title"
+                    placeholder="Enter the Lead name"
                     {...register("lead_name")}
                     error={errors?.lead_name?.message}
                   />
 
                   <Input
                     label="Contact Number"
-                    placeholder="Enter the post caption"
+                    placeholder="Enter the contact number"
                     {...register("contact_number")}
                     error={errors?.contact_number?.message}
                   />
+
+                  {/* School */}
                   <Controller
-                  render={({ field: { value, onChange, ...rest } }) => (
-                    <Combobox
-                      data={schools}
-                      displayField="name"
-                      value={schools.find((school) => school.id === value) || null}
-                      onChange={(val) => onChange(val?.id)}
-                      placeholder="Please Select School"
-                      label="Select School"
-                      searchFields={["name"]}
-                      error={errors?.school_id?.message}
-                      highlight
-                      {...rest}
-                    />
-                  )}
-                  control={control}
-                  name="school_id"
-                />
-                <Controller
-                  render={({ field: { value, onChange, ...rest } }) => (
-                    <Combobox
-                      data={branchs}
-                      displayField="name"
-                      value={branchs.find((branch) => branch.id === value) || null}
-                      onChange={(val) => onChange(val?.id)}
-                      placeholder="Please Select Branch"
-                      label="Select Branch"
-                      searchFields={["name"]}
-                      error={errors?.branch_id?.message}
-                      highlight
-                      {...rest}
-                    />
-                  )}
-                  control={control}
-                  name="branch_id"
-                />
-               
-               
+                    render={({ field: { value, onChange, ...rest } }) => (
+                      <Combobox
+                        data={schools}
+                        displayField="name"
+                        value={
+                          schools.find((school) => school.id === value) || null
+                        }
+                        onChange={(val) => onChange(val?.id)}
+                        placeholder="Please Select School"
+                        label="Select School"
+                        searchFields={["name"]}
+                        error={errors?.school_id?.message}
+                        highlight
+                        {...rest}
+                      />
+                    )}
+                    control={control}
+                    name="school_id"
+                  />
+
+                  {/* Branch */}
+                  <Controller
+                    render={({ field: { value, onChange, ...rest } }) => (
+                      <Combobox
+                        data={branchs}
+                        displayField="name"
+                        value={
+                          branchs.find((branch) => branch.id === value) || null
+                        }
+                        onChange={(val) => onChange(val?.id)}
+                        placeholder="Please Select Branch"
+                        label="Select Branch"
+                        searchFields={["name"]}
+                        error={errors?.branch_id?.message}
+                        highlight
+                        {...rest}
+                      />
+                    )}
+                    control={control}
+                    name="branch_id"
+                  />
                 </div>
               </Card>
             </div>
+
+            {/* Right Section */}
             <div className="col-span-12 space-y-4 sm:space-y-5 lg:col-span-4 lg:space-y-6">
               <Card className="space-y-5 p-4 sm:px-5">
-           
-              <Controller
+                {/* Lead Source */}
+                <Controller
                   render={({ field: { value, onChange, ...rest } }) => (
                     <Combobox
                       data={lead_source}
                       displayField="label"
-                      value={lead_source.find((Source) => Source.id === value) || null}
+                      value={
+                        lead_source.find((Source) => Source.id === value) ||
+                        null
+                      }
                       onChange={(val) => onChange(val?.id)}
                       placeholder="Please Select Source"
                       label="Select Source"
@@ -309,12 +320,16 @@ fetchData();
                   name="lead_source_id"
                 />
 
-              <Controller
+                {/* Lead Type */}
+                <Controller
                   render={({ field: { value, onChange, ...rest } }) => (
                     <Combobox
                       data={lead_types}
                       displayField="name"
-                      value={lead_types.find((LeadType) => LeadType.id === value) || null}
+                      value={
+                        lead_types.find((LeadType) => LeadType.id === value) ||
+                        null
+                      }
                       onChange={(val) => onChange(val?.id)}
                       placeholder="Please Select Lead Type"
                       label="Select Lead Type"
@@ -327,8 +342,9 @@ fetchData();
                   control={control}
                   name="lead_type_id"
                 />
-               
-               <Controller
+
+                {/* Status */}
+                <Controller
                   render={({ field: { value, onChange, ...rest } }) => (
                     <Combobox
                       data={status}
@@ -347,6 +363,7 @@ fetchData();
                   name="status_id"
                 />
 
+                {/* Owner */}
                 <Controller
                   render={({ field: { value, onChange, ...rest } }) => (
                     <Combobox
@@ -365,10 +382,10 @@ fetchData();
                   control={control}
                   name="owner_id"
                 />
-                 <Switch label="Converted" {...register("is_converted")} />
-              </Card>
 
-               
+                {/* Converted */}
+                <Switch label="Converted" {...register("is_converted")} />
+              </Card>
             </div>
           </div>
         </form>

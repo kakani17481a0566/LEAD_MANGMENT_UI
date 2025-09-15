@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-const AutoLogout = ({ timeout = 60000 }) => {
+const AutoLogout = ({ timeout = 1000 * 60 * 10 }) => { // ✅ default = 10 minutes
   const timer = useRef(null);
 
   // Reset timer and set up auto-logout
@@ -10,8 +10,10 @@ const AutoLogout = ({ timeout = 60000 }) => {
       // Clear all possible user data
       localStorage.clear();
       sessionStorage.clear();
-      if ('caches' in window) {
-        caches.keys().then(names => names.forEach(name => caches.delete(name)));
+      if ("caches" in window) {
+        caches.keys().then((names) =>
+          names.forEach((name) => caches.delete(name))
+        );
       }
       // Force full reload to reset app state
       window.location.reload();
@@ -20,15 +22,15 @@ const AutoLogout = ({ timeout = 60000 }) => {
 
   useEffect(() => {
     const events = ["mousemove", "keydown", "click", "scroll", "touchstart"];
-    events.forEach(event => window.addEventListener(event, resetTimer));
+    events.forEach((event) => window.addEventListener(event, resetTimer));
 
     resetTimer(); // Start on mount
 
     return () => {
-      events.forEach(event => window.removeEventListener(event, resetTimer));
+      events.forEach((event) => window.removeEventListener(event, resetTimer));
       clearTimeout(timer.current);
     };
-  }, []);
+  }, [timeout]);
 
   return null;
 };
