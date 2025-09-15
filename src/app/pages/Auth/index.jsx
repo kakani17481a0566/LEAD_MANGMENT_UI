@@ -1,3 +1,4 @@
+import { useState } from "react";
 // Import Dependencies
 // import { Link } from "react-router";
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
@@ -12,10 +13,16 @@ import { schema } from "./schema";
 import { Page } from "components/shared/Page";
 import axios from "axios";
 
+// ✅ Import your local background image
+import bgImage from "assets/bg.jpg";
+import appLogo from "assets/applogo.webp";
+
 // ----------------------------------------------------------------------
 
 export default function SignIn() {
   const { login, errorMessage } = useAuthContext();
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -29,11 +36,12 @@ export default function SignIn() {
   });
 
   const fetchData = async (data) => {
+    setLoading(true);
     var postData = {
       identifier: data.username,
       password: data.password,
     };
-    console.log(postData);
+
     let axiosConfig = {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -42,22 +50,18 @@ export default function SignIn() {
     };
 
     try {
-      //  axios.post('https://localhost:7257/api/User/login', postData, axiosConfig)
       axios
         .post(
           "https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/User/login",
           postData,
           axiosConfig,
         )
-
         .then((res) => {
           console.log("RESPONSE RECEIVED: ", res);
           login({
             username: "username",
             password: "password",
           });
-
-          return true;
         })
         .catch((err) => {
           console.log("AXIOS ERROR: ", err);
@@ -65,6 +69,9 @@ export default function SignIn() {
             username: "fdf",
             password: "sdfsd",
           });
+        })
+        .finally(() => {
+          setLoading(false);
         });
     } catch (error) {
       console.error(error);
@@ -72,6 +79,7 @@ export default function SignIn() {
         username: "fdf",
         password: "sdfsd",
       });
+      setLoading(false);
     }
   };
 
@@ -81,41 +89,34 @@ export default function SignIn() {
 
   return (
     <div
-      // Background image with added styling for glass blur
       style={{
-        backgroundImage:
-          "url(https://res.cloudinary.com/kakani7/image/upload/v1746165081/MSI/n0virwrf54za0cynyy3w.jpg)",
+        backgroundImage: `url(${bgImage})`, // ✅ local image
         backgroundSize: "cover",
         backgroundPosition: "center",
-        // height: "100vh", // updated for full viewport height
-        display: "flex", // added to center content
-        justifyContent: "center", // horizontally center
-        alignItems: "center", // vertically center
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <div
-        // Glass blur wrapper added around the page
         style={{
-          background: "rgba(255, 255, 255, 0.1)", // semi-transparent
-          backdropFilter: "blur(5px)", // glass blur
-          WebkitBackdropFilter: "blur(10px)", // Safari support
-          borderRadius: "12px", // optional rounding
-          padding: "2rem", // spacing
+          background: "rgba(255, 255, 255, 0.1)",
+          backdropFilter: "blur(5px)",
+          WebkitBackdropFilter: "blur(10px)",
+          borderRadius: "12px",
+          padding: "2rem",
           width: "100%",
         }}
       >
         <Page title="Login">
           <main className="min-h-100vh grid w-full grow grid-cols-1 place-items-center">
             <div className="w-full max-w-[26rem] p-4 sm:px-5">
-              <div className="text-center"></div>
-
               <Card className="bg-opacity-20 index : 1 mt-5 rounded-lg bg-white p-5 text-black shadow-lg backdrop-blur-md lg:p-7">
                 <img
-                  src="https://res.cloudinary.com/kakani7/image/upload/v1746448921/MSI/ewmfrkko11xbaiexcan5.svg"
+                  src={appLogo}
                   alt="App Logo"
                   className="mx-auto h-auto w-full max-w-xs pb-6"
                 />
-
                 <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
                   <div className="space-y-4">
                     <Input
@@ -165,11 +166,17 @@ export default function SignIn() {
                     </a>
                   </div>
 
-                  <Button type="submit" className="mt-5 w-full" color="primary">
-                    Sign In
+                  <Button
+                    type="submit"
+                    className="mt-5 w-full"
+                    color="primary"
+                    disabled={loading}
+                  >
+                    {loading ? "Signing In..." : "Sign In"}
                   </Button>
                 </form>
               </Card>
+
               <div className="dark:text-dark-300 mt-8 flex justify-center text-xs text-gray-400">
                 <a href="##">Privacy Notice</a>
                 <div className="dark:bg-dark-500 mx-2.5 my-0.5 w-px bg-gray-200"></div>
