@@ -5,7 +5,7 @@ import { NavLink, useRouteLoaderData } from "react-router";
 
 // Local Imports
 import { Badge } from "components/ui";
-import { useBreakpointsContext } from "app/contexts/breakpoint/context";
+
 import { useSidebarContext } from "app/contexts/sidebar/context";
 import { useTranslation } from "react-i18next";
 
@@ -13,14 +13,14 @@ import { useTranslation } from "react-i18next";
 
 export function MenuItem({ data }) {
   const { transKey, path, id } = data;
-  const { lgAndDown } = useBreakpointsContext();
+
   const { close } = useSidebarContext();
   const { t } = useTranslation();
 
   const title = t(transKey) || data.title;
   const info = useRouteLoaderData("root")?.[id]?.info;
 
-  const handleMenuItemClick = () => lgAndDown && close();
+  const handleMenuItemClick = () => close();
 
   return (
     <NavLink

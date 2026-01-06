@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 
 // Local Imports
-import { useBreakpointsContext } from "app/contexts/breakpoint/context";
+
 import { useSidebarContext } from "app/contexts/sidebar/context";
 import { Badge } from "components/ui";
 
@@ -14,13 +14,13 @@ import { Badge } from "components/ui";
 export function MenuItem({ data }) {
   const { path, transKey, id } = data;
   const { t } = useTranslation();
-  const { lgAndDown } = useBreakpointsContext();
+
   const { close } = useSidebarContext();
   const title = t(transKey) || data.title;
 
   const info = useRouteLoaderData("root")?.[id]?.info;
 
-  const handleMenuItemClick = () => lgAndDown && close();
+  const handleMenuItemClick = () => close();
 
   return (
     <NavLink
