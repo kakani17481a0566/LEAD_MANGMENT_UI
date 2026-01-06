@@ -22,6 +22,11 @@ const LOGO_MAP = {
   "LinkedIn": "/images/logos/linkedin-round.svg",
   "Twitter": "/images/logos/twitter-round.svg",
   "WhatsApp": "/images/logos/whatsapp-round.svg",
+  "Website": "/images/logos/dribbble-round.svg", // Dribbble icon for Website
+  "Walk-in": "/images/logos/google_my_business-round.svg", // GMB for Walk-in
+  "Referral": "/images/logos/telegram-round.svg", // Telegram for Referral
+  "Parking Board": "/images/logos/trello.svg", // Trello for Board
+  "Organic": "/images/logos/medium-round.svg", // Medium for Organic content
 };
 
 export function SocialTraffic() {
@@ -32,11 +37,16 @@ export function SocialTraffic() {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/LeadSummary/lead-count-by-source-current-year"
+          "https://lead-mgmt-msi-kakani-2025.azurewebsites.net/api/LeadSummary/lead-count-by-source-current-year"
         );
-        setChannels(response);
+        // Map API response (sourceName, totalLeads) to UI expected format (name, impression)
+        const mappedData = response.map((item, index) => ({
+          uid: index, // or use item.sourceName if unique
+          name: item.sourceName,
+          impression: item.totalLeads,
+        }));
+        setChannels(mappedData);
         setLoading(false);
-        console.log("Fetched data:", response);
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
@@ -83,7 +93,7 @@ export function SocialTraffic() {
             <div className="flex min-w-0 items-center gap-3">
               <img
                 src={LOGO_MAP[channel.name] || channel.logo || "/images/logos/tumblr-round.svg"}
-                alt={channel.name}
+                alt=""
                 className="w-6 h-6 rounded-full"
               />
               <span className="font-medium">{channel.name}</span>
