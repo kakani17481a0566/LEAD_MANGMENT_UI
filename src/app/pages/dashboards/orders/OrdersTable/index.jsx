@@ -11,7 +11,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { Fragment, useRef, useState ,useEffect} from "react";
+import { Fragment, useRef, useState, useEffect } from "react";
 
 // Local Imports
 import { TableSortIcon } from "components/shared/table/TableSortIcon";
@@ -127,27 +127,27 @@ export default function OrdersTable() {
   useLockScrollbar(tableSettings.enableFullScreen);
 
 
-  
-  
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            // const { data: response } = await axios.get('https://localhost:7257/api/Lead');
-            const { data: response } = await axios.get('https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/Lead');
 
-            setOrders(response);
-             
-            //setLoading(false);
-             
-            console.log("response", response);
-          } catch (error) {
-            console.error(error)
-          }
-          
-        };
-    
-        fetchData();
-      }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // const { data: response } = await axios.get('https://localhost:7257/api/Lead');
+        const { data: response } = await axios.get('https://lead-mgmt-msi-kakani-2025.azurewebsites.net/api/Lead');
+
+        setOrders(response);
+
+        //setLoading(false);
+
+        console.log("response", response);
+      } catch (error) {
+        console.error(error)
+      }
+
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="col-span-12">
@@ -155,7 +155,7 @@ export default function OrdersTable() {
         className={clsx(
           "flex flex-col",
           tableSettings.enableFullScreen &&
-            "fixed inset-0 z-61 h-full w-full bg-white pt-3 dark:bg-dark-900",
+          "fixed inset-0 z-61 h-full w-full bg-white pt-3 dark:bg-dark-900",
         )}
       >
         <Toolbar table={table} />
@@ -183,9 +183,9 @@ export default function OrdersTable() {
                           "bg-gray-200 font-semibold uppercase text-gray-800 dark:bg-dark-800 dark:text-dark-100 first:ltr:rounded-tl-lg last:ltr:rounded-tr-lg first:rtl:rounded-tr-lg last:rtl:rounded-tl-lg",
                           header.column.getCanPin() && [
                             header.column.getIsPinned() === "left" &&
-                              "sticky z-2 ltr:left-0 rtl:right-0",
+                            "sticky z-2 ltr:left-0 rtl:right-0",
                             header.column.getIsPinned() === "right" &&
-                              "sticky z-2 ltr:right-0 rtl:left-0",
+                            "sticky z-2 ltr:right-0 rtl:left-0",
                           ],
                         )}
                       >
@@ -198,9 +198,9 @@ export default function OrdersTable() {
                               {header.isPlaceholder
                                 ? null
                                 : flexRender(
-                                    header.column.columnDef.header,
-                                    header.getContext(),
-                                  )}
+                                  header.column.columnDef.header,
+                                  header.getContext(),
+                                )}
                             </span>
                             <TableSortIcon
                               sorted={header.column.getIsSorted()}
@@ -229,8 +229,8 @@ export default function OrdersTable() {
                           "relative border-y border-transparent border-b-gray-200 dark:border-b-dark-500",
                           row.getIsExpanded() && "border-dashed",
                           row.getIsSelected() &&
-                            !isSafari &&
-                            "row-selected after:pointer-events-none after:absolute after:inset-0 after:z-2 after:h-full after:w-full after:border-3 after:border-transparent after:bg-primary-500/10 ltr:after:border-l-primary-500 rtl:after:border-r-primary-500",
+                          !isSafari &&
+                          "row-selected after:pointer-events-none after:absolute after:inset-0 after:z-2 after:h-full after:w-full after:border-3 after:border-transparent after:bg-primary-500/10 ltr:after:border-l-primary-500 rtl:after:border-r-primary-500",
                         )}
                       >
                         {/* first row is a normal row */}
@@ -246,9 +246,9 @@ export default function OrdersTable() {
 
                                 cell.column.getCanPin() && [
                                   cell.column.getIsPinned() === "left" &&
-                                    "sticky z-2 ltr:left-0 rtl:right-0",
+                                  "sticky z-2 ltr:left-0 rtl:right-0",
                                   cell.column.getIsPinned() === "right" &&
-                                    "sticky z-2 ltr:right-0 rtl:left-0",
+                                  "sticky z-2 ltr:right-0 rtl:left-0",
                                 ],
                               )}
                             >

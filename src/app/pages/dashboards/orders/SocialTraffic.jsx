@@ -13,6 +13,17 @@ import axios from "axios";
 
 // ----------------------------------------------------------------------
 
+const LOGO_MAP = {
+  "Google": "/images/logos/google-round.svg",
+  "Meta Ads": "/images/logos/facebook-round.svg",
+  "Facebook": "/images/logos/facebook-round.svg",
+  "Instagram": "/images/logos/instagram-round.svg",
+  "Youtube": "/images/logos/youtube-round.svg",
+  "LinkedIn": "/images/logos/linkedin-round.svg",
+  "Twitter": "/images/logos/twitter-round.svg",
+  "WhatsApp": "/images/logos/whatsapp-round.svg",
+};
+
 export function SocialTraffic() {
   const [channels, setChannels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -71,7 +82,7 @@ export function SocialTraffic() {
           >
             <div className="flex min-w-0 items-center gap-3">
               <img
-                src={channel.logo}
+                src={LOGO_MAP[channel.name] || channel.logo || "/images/logos/tumblr-round.svg"}
                 alt={channel.name}
                 className="w-6 h-6 rounded-full"
               />
@@ -116,7 +127,7 @@ function ActionMenu() {
                       className={clsx(
                         "flex h-9 w-full items-center px-3 tracking-wide outline-hidden transition-colors",
                         focus &&
-                          "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100"
+                        "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100"
                       )}
                     >
                       <span>{label}</span>

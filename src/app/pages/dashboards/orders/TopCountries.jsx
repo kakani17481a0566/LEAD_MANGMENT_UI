@@ -14,7 +14,7 @@ export function TopCountries() {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          'https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/LeadSummary/LeadCountByBranch-SuccessPercentage'
+          'https://lead-mgmt-msi-kakani-2025.azurewebsites.net/api/LeadSummary/LeadCountByBranch-SuccessPercentage'
         );
         setBranches(response);
       } catch (error) {
@@ -70,13 +70,16 @@ export function TopCountries() {
 
               return (
                 <div
-                  key={branch.name}
+                  key={branch.branchName}
                   className="flex items-center justify-between gap-2"
                 >
                   <div className="flex min-w-0 items-center gap-2">
-                    <img src={branch.flag} alt={branch.name} className="w-5 h-5 rounded-full" />
+                    {/* Placeholder icon since no flag is available */}
+                    <div className="w-5 h-5 rounded-full bg-primary-500/10 flex items-center justify-center text-primary-500 text-xs">
+                      B
+                    </div>
                     <span className="font-medium text-gray-800 dark:text-dark-100">
-                      {branch.name}
+                      {branch.branchName}
                     </span>
                   </div>
                   <div className="flex items-center gap-4 text-sm-plus text-gray-800 dark:text-dark-100">
