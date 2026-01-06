@@ -10,6 +10,7 @@ import clsx from "clsx";
 import { Fragment, useState, useEffect } from "react";
 import { Button, Card, Spinner } from "components/ui";
 import axios from "axios";
+import { LEAD_ENDPOINTS } from "constants/apiConfig";
 
 // ----------------------------------------------------------------------
 
@@ -37,7 +38,7 @@ export function SocialTraffic() {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "https://lead-mgmt-msi-kakani-2025.azurewebsites.net/api/LeadSummary/lead-count-by-source-current-year"
+          LEAD_ENDPOINTS.LEAD_COUNT_BY_SOURCE
         );
         // Map API response (sourceName, totalLeads) to UI expected format (name, impression)
         const mappedData = response.map((item, index) => ({

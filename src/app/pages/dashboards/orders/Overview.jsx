@@ -22,6 +22,7 @@ import ReactApexChart from "react-apexcharts";
 // Local Imports
 import { Button, Card, Spinner } from "components/ui";
 import { Listbox } from "components/shared/form/Listbox";
+import { LEAD_ENDPOINTS } from "constants/apiConfig";
 
 import axios from "axios";
 
@@ -176,7 +177,7 @@ export function Overview() {
       try {
         // const { data: response } = await axios.get('https://localhost:7257/api/LeadSummary/LeadStats');
         const { data: response } = await axios.get(
-          `https://lead-mgmt-msi-kakani-2025.azurewebsites.net/api/LeadSummary/LeadStats?year=${year.value}`,
+          `${LEAD_ENDPOINTS.LEAD_STATS}?year=${year.value}`,
         );
 
         setLeadData(response);

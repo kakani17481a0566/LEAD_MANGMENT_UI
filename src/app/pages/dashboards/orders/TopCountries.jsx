@@ -2,6 +2,7 @@
 import { Card, Spinner } from "components/ui";
 import { useState, useEffect } from "react";
 import axios from 'axios';
+import { LEAD_ENDPOINTS } from "constants/apiConfig";
 
 // ----------------------------------------------------------------------
 
@@ -14,7 +15,7 @@ export function TopCountries() {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          'https://lead-mgmt-msi-kakani-2025.azurewebsites.net/api/LeadSummary/LeadCountByBranch-SuccessPercentage'
+          LEAD_ENDPOINTS.LEAD_COUNT_BY_BRANCH
         );
         setBranches(response);
       } catch (error) {

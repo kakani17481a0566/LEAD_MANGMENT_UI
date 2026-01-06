@@ -33,6 +33,7 @@ import { ordersList } from "./data";
 import { Toolbar } from "./Toolbar";
 import { useThemeContext } from "app/contexts/theme/context";
 import { getUserAgentBrowser } from "utils/dom/getUserAgentBrowser";
+import { LEAD_ENDPOINTS } from "constants/apiConfig";
 import axios from 'axios';
 
 // ----------------------------------------------------------------------
@@ -133,7 +134,7 @@ export default function OrdersTable() {
     const fetchData = async () => {
       try {
         // const { data: response } = await axios.get('https://localhost:7257/api/Lead');
-        const { data: response } = await axios.get('https://lead-mgmt-msi-kakani-2025.azurewebsites.net/api/Lead');
+        const { data: response } = await axios.get(LEAD_ENDPOINTS.LEAD);
 
         setOrders(response);
 

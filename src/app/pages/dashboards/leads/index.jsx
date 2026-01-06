@@ -11,7 +11,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { Fragment, useRef, useState ,useEffect} from "react";
+import { Fragment, useRef, useState, useEffect } from "react";
 
 import { PlusIcon } from "@heroicons/react/20/solid";
 
@@ -50,6 +50,7 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/solid";
 
 //import { NewLead } from "./NewLead";
+import { LEAD_ENDPOINTS } from "constants/apiConfig";
 import axios from 'axios';
 
 // ----------------------------------------------------------------------
@@ -59,7 +60,7 @@ const isSafari = getUserAgentBrowser() === "Safari";
 export default function OrdersDatatableV2() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [isOpen, {  close }] = useDisclosure(false);
+  const [isOpen, { close }] = useDisclosure(false);
   const { cardSkin } = useThemeContext();
 
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
@@ -146,12 +147,12 @@ export default function OrdersDatatableV2() {
 
   useLockScrollbar(tableSettings.enableFullScreen);
 
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);  // Set loading to true when starting to fetch
-        const { data: response } = await axios.get('https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/Lead/');
+        const { data: response } = await axios.get(LEAD_ENDPOINTS.LEAD);
         setOrders(response);
         setLoading(false);  // Set loading to false when data is loaded
       } catch (error) {
@@ -161,7 +162,7 @@ export default function OrdersDatatableV2() {
     };
     fetchData();
   }, []);
-  
+
 
 
 
@@ -169,7 +170,7 @@ export default function OrdersDatatableV2() {
   //           alert("sdfasdf");
   //       // Navigate('/dashboards/addlead')
   //       // return <Navigate to={'/dashboards/addlead'} />;
-       
+
   // }
 
   return (
@@ -194,7 +195,7 @@ export default function OrdersDatatableV2() {
               >
                 <div className="fixed inset-0 bg-gray-900/50 backdrop-blur transition-opacity dark:bg-black/40" />
               </TransitionChild>
-  
+
               <TransitionChild
                 as={Fragment}
                 enter="ease-out transform-gpu transition-transform duration-200"
@@ -220,7 +221,7 @@ export default function OrdersDatatableV2() {
               </TransitionChild>
             </Dialog>
           </Transition>
-  
+
           <div className="flex items-center justify-between space-x-4 ">
             <div className="min-w-0">
               <h2 className="truncate text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50">
@@ -232,7 +233,7 @@ export default function OrdersDatatableV2() {
               <span>New Lead</span>
             </Button>
           </div>
-  
+
           <div
             className={clsx(
               "flex flex-col pt-4",
@@ -296,7 +297,7 @@ export default function OrdersDatatableV2() {
                               "relative border-y border-transparent border-b-gray-200 dark:border-b-dark-500",
                               row.getIsExpanded() && "border-dashed",
                               row.getIsSelected() && !isSafari &&
-                                "row-selected after:pointer-events-none after:absolute after:inset-0 after:z-2 after:h-full after:w-full after:border-3 after:border-transparent after:bg-primary-500/10 ltr:after:border-l-primary-500 rtl:after:border-r-primary-500"
+                              "row-selected after:pointer-events-none after:absolute after:inset-0 after:z-2 after:h-full after:w-full after:border-3 after:border-transparent after:bg-primary-500/10 ltr:after:border-l-primary-500 rtl:after:border-r-primary-500"
                             )}
                           >
                             {row.getVisibleCells().map((cell) => {

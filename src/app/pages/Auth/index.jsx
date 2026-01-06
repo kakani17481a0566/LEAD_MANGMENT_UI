@@ -11,6 +11,7 @@ import { Button, Card, Checkbox, Input, InputErrorMsg } from "components/ui";
 import { useAuthContext } from "app/contexts/auth/context";
 import { schema } from "./schema";
 import { Page } from "components/shared/Page";
+import { USER_ENDPOINTS } from "constants/apiConfig";
 import axios from "axios";
 
 // ✅ Import your local background image
@@ -52,7 +53,7 @@ export default function SignIn() {
     try {
       axios
         .post(
-          "https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/User/login",
+          USER_ENDPOINTS.LOGIN,
           postData,
           axiosConfig,
         )

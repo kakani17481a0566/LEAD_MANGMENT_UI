@@ -145,7 +145,7 @@ export default function NewLead() {
 
 
       // axios.post('https://localhost:7257/api/Lead', postData, axiosConfig)
-      axios.post('https://lead-mgmt-msi-kakani-2025.azurewebsites.net/api/Lead', postData, axiosConfig)
+      axios.post(LEAD_ENDPOINTS.LEAD, postData, axiosConfig)
 
         .then((res) => {
           toast("New Post Published. Now you can add new one", {

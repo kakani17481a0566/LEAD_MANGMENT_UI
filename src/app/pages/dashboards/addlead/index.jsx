@@ -9,6 +9,7 @@ import { schema } from "./schema";
 import { Page } from "components/shared/Page";
 import { Button, Card, Input, Switch } from "components/ui";
 import { Combobox } from "components/shared/form/Combobox";
+import { LEAD_ENDPOINTS } from "constants/apiConfig";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
@@ -80,15 +81,7 @@ const AddLead = () => {
   const location = useLocation();
   const [leadId, setLeadid] = useState(0);
 
-  const formatDate = (date) => {
-    let datePart = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
-      .map((n) => n.toString().padStart(2, "0"))
-      .join("-");
-    let timePart = [date.getHours(), date.getMinutes(), date.getSeconds()]
-      .map((n) => n.toString().padStart(2, "0"))
-      .join(":");
-    return datePart + " " + timePart;
-  };
+
 
   const {
     register,
@@ -114,7 +107,7 @@ const AddLead = () => {
         }
 
         const { data: response } = await axios.get(
-          `https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/Lead/${id}`
+          `${LEAD_ENDPOINTS.LEAD}/${id}`
         );
 
         const newdata = {
@@ -149,7 +142,7 @@ const AddLead = () => {
       LeadSourceId: Number(data.lead_source_id),
       BranchId: Number(data.branch_id),
       LeadTypeId: Number(data.lead_type_id),
-      DateTime: formatDate(new Date()),
+      DateTime: new Date().toISOString(),
       Converted: !!data.is_converted, // ✅ boolean
       SalesPersonId: 1,
       LeadListId: 1,
@@ -168,7 +161,7 @@ const AddLead = () => {
     try {
       if (leadId && Number(leadId) > 0) {
         await axios.put(
-          `https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/Lead/${leadId}`,
+          `${LEAD_ENDPOINTS.LEAD}/${leadId}`,
           postData,
           axiosConfig
         );
@@ -176,7 +169,7 @@ const AddLead = () => {
         toast("Lead updated successfully", { invert: true });
       } else {
         await axios.post(
-          "https://test20250503145645-drh2beevhxfthfhw.canadacentral-01.azurewebsites.net/api/Lead/",
+          LEAD_ENDPOINTS.LEAD,
           postData,
           axiosConfig
         );
