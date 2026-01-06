@@ -1,5 +1,5 @@
 // Import Dependencies
-import { Card } from "components/ui";
+import { Card, Spinner } from "components/ui";
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
@@ -38,7 +38,7 @@ export function TopCountries() {
 
       {loading && (
         <div className="flex justify-center items-center h-20">
-          <span className="text-base text-gray-600 dark:text-dark-300">Loading...</span>
+          <Spinner className="size-8" />
         </div>
       )}
 

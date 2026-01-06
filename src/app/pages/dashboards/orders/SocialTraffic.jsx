@@ -8,7 +8,7 @@ import {
 import { EllipsisHorizontalIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
 import { Fragment, useState, useEffect } from "react";
-import { Button, Card } from "components/ui";
+import { Button, Card, Spinner } from "components/ui";
 import axios from "axios";
 
 // ----------------------------------------------------------------------
@@ -49,7 +49,7 @@ export function SocialTraffic() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-full">
-        <p>Loading...</p>
+        <Spinner className="size-8" />
       </div>
     );
   }

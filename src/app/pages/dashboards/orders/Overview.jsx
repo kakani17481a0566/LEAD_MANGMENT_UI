@@ -20,7 +20,8 @@ import { Fragment, useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 
 // Local Imports
-import { Button, Card } from "components/ui";
+import { Button, Card, Spinner } from "components/ui";
+import { Listbox } from "components/shared/form/Listbox";
 
 import axios from "axios";
 
@@ -147,6 +148,9 @@ const chartConfig = {
 export function Overview() {
   const [focusRange, setfocusRange] = useState("yearly");
   const [loading, setLoading] = useState(true);
+  const currentYear = new Date().getFullYear();
+  const [year, setYear] = useState({ value: currentYear, label: `${currentYear}` });
+
   const [LeadTotals, setLeadTotals] = useState({
     totalLeads: 0,
     convertedLeads: 0,
@@ -162,12 +166,17 @@ export function Overview() {
     nonConverted: 0,
   });
 
+  const years = [
+    { value: currentYear, label: `${currentYear}` },
+    { value: currentYear - 1, label: `${currentYear - 1}` },
+  ];
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         // const { data: response } = await axios.get('https://localhost:7257/api/LeadSummary/LeadStats');
         const { data: response } = await axios.get(
-          "https://lead-mgmt-msi-kakani-2025.azurewebsites.net/api/LeadSummary/LeadStats",
+          `https://lead-mgmt-msi-kakani-2025.azurewebsites.net/api/LeadSummary/LeadStats?year=${year.value}`,
         );
 
         setLeadData(response);
@@ -182,15 +191,22 @@ export function Overview() {
     };
 
     fetchData();
-  }, []);
+  }, [year]);
 
   return (
     <Card className="col-span-12 lg:col-span-8">
       <div className="flex flex-col justify-between px-4 pt-3 sm:flex-row sm:items-center sm:px-5">
-        <div className="flex flex-1 items-center justify-between space-x-2 sm:flex-initial">
+        <div className="flex flex-1 items-center space-x-2 sm:flex-initial">
           <h2 className="text-sm-plus dark:text-dark-100 font-medium tracking-wide text-gray-800">
             Leads Overview
           </h2>
+          <div className="w-32">
+            <Listbox
+              data={years}
+              value={year}
+              onChange={setYear}
+            />
+          </div>
           <ActionMenu />
         </div>
         <RadioGroup
@@ -278,7 +294,7 @@ export function Overview() {
           />
         ) : (
           <div className="flex h-full items-center justify-center text-gray-500">
-            <span>Loading...</span>
+            <Spinner className="size-8" />
           </div>
         )}
       </div>
